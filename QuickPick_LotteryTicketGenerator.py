@@ -10,56 +10,61 @@ def main():
     NUM_OF_CHOICES = 6
     MIN_CHOICE = 1
     MAX_CHOICE = 45
-    possible_picks = []
+    ticket_numbers = []
     num_of_quick_picks = int(input("How many quick picks? "))
 
-    possible_picks = randomize_choices(MAX_CHOICE, MIN_CHOICE, NUM_OF_CHOICES, num_of_quick_picks, possible_picks)
-    possible_picks = order(NUM_OF_CHOICES, num_of_quick_picks, possible_picks)
-    pick_indexes = quick_pick_indexs(NUM_OF_CHOICES, num_of_quick_picks)
-    picks = quick_pick(pick_indexes, possible_picks, num_of_quick_picks, NUM_OF_CHOICES)
+    ticket_numbers = randomize_choices(MAX_CHOICE, MIN_CHOICE, NUM_OF_CHOICES, num_of_quick_picks, ticket_numbers)
+    ticket_numbers = reorder(NUM_OF_CHOICES, num_of_quick_picks, ticket_numbers)
+    picks = quick_pick_indexs(ticket_numbers, NUM_OF_CHOICES, num_of_quick_picks)
 
-    print()
-    for i in range(0, num_of_quick_picks):
-        for j in range(0, NUM_OF_CHOICES - 1):
-            print("{:2} ".format(possible_picks[i * NUM_OF_CHOICES + j]), end=" ")
-        print()
-    print()
+    print_ticket(NUM_OF_CHOICES, num_of_quick_picks, ticket_numbers)
+
     print("Your quick picks are {}".format(picks))
 
 
-def order(NUM_OF_CHOICES, num_of_quick_picks, possible_picks):
+def reorder(NUM_OF_CHOICES, num_of_quick_picks, ticket_numbers):
+    # Reorder the ticket numbers one row, one number at a time.
     for i in range(0, num_of_quick_picks):
         for j in range(0, NUM_OF_CHOICES - 1):
-            temp_min = possible_picks.index(min(possible_picks[(i * NUM_OF_CHOICES) + j:(i + 1) * NUM_OF_CHOICES]),
-                                            i * NUM_OF_CHOICES)
-            temp_backup = possible_picks[j + (i * NUM_OF_CHOICES)]
-            possible_picks[j + (i * NUM_OF_CHOICES)] = possible_picks[temp_min]
-            possible_picks[temp_min] = temp_backup
-    return possible_picks
+            # The index of the smallest number is found
+            min_index = ticket_numbers.index(min(ticket_numbers[(i * NUM_OF_CHOICES) + j:(i + 1) * NUM_OF_CHOICES]),
+                                             i * NUM_OF_CHOICES)
+            # Check that the smallest number isn't going to be the one changed.
+            if min_index != j + (i * NUM_OF_CHOICES):
+                # The the number that is to be changed is backed up for the origin of the smallest number.
+                number_backup = ticket_numbers[j + (i * NUM_OF_CHOICES)]
+                ticket_numbers[j + (i * NUM_OF_CHOICES)] = ticket_numbers[min_index]
+                # With the smallest number moved, the number it replaced is moved to it's origin.
+                ticket_numbers[min_index] = number_backup
+    return ticket_numbers
 
 
-def quick_pick_indexs(NUM_OF_CHOICES, num_of_quick_picks):
-    pick_indexs = []
+def print_ticket(NUM_OF_CHOICES, num_of_quick_picks, ticket_numbers):
+    print()
     for i in range(0, num_of_quick_picks):
-        pick_indexs.append(random.randint(0, NUM_OF_CHOICES - 1))
-    return pick_indexs
+        for j in range(0, NUM_OF_CHOICES - 1):
+            print("{:2} ".format(ticket_numbers[i * NUM_OF_CHOICES + j]), end=" ")
+        print()
+    print()
 
 
-def quick_pick(pick_indexs, possible_picks, num_of_quick_picks, NUM_OF_CHOICES):
+def quick_pick_indexs(ticket_numbers, NUM_OF_CHOICES, num_of_quick_picks):
     picks = []
+    # Randomly pick a number from each row of the ticket
     for i in range(0, num_of_quick_picks):
-        picks.append(possible_picks[pick_indexs[i] + i * NUM_OF_CHOICES])
+        picks.append(ticket_numbers[random.randint(0, NUM_OF_CHOICES - 1) + i * NUM_OF_CHOICES])
     return picks
 
 
-def randomize_choices(MAX_CHOICE, MIN_CHOICE, NUM_OF_CHOICES, num_of_quick_picks, possible_picks):
-    random_choice = random.randint(MIN_CHOICE, MAX_CHOICE)
+def randomize_choices(MAX_CHOICE, MIN_CHOICE, NUM_OF_CHOICES, num_of_quick_picks, ticket_numbers):
+    # Randomly create a set of unique numbers a row at a time, adding them to the ticket.
     for i in range(0, num_of_quick_picks):
+        random_choice = random.randint(MIN_CHOICE, MAX_CHOICE)
         for j in range(0, NUM_OF_CHOICES):
-            while random_choice in possible_picks[i * NUM_OF_CHOICES:]:
+            while random_choice in ticket_numbers[i * NUM_OF_CHOICES:]:
                 random_choice = random.randint(MIN_CHOICE, MAX_CHOICE)
-            possible_picks.append(random_choice)
-    return possible_picks
+            ticket_numbers.append(random_choice)
+    return ticket_numbers
 
 
 if __name__ == "__main__":
