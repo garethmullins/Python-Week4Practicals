@@ -5,13 +5,16 @@ __author__ = 'Gareth'
 
 
 def main():
+    # access the usernames
     username_list = open('usernames.txt', mode = 'r')
     username = input("Username: ")
-    temp = False
+    access_granted = False
+
+    # check if the username provided is valid
     for line in username_list:
         if username in line:
-            temp = True
-    if temp:
+            access_granted = True
+    if access_granted:
         print("Access granted")
     else:
         print("Access denied")
