@@ -1,6 +1,8 @@
 """
-
+number_inputs asks for a number 5 times and
+outputs the first, last, smallest, largest and average of the numbers.
 """
+__author__ = 'Gareth'
 
 
 def main():
