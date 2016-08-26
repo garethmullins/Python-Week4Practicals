@@ -16,16 +16,29 @@ def main():
     num_of_quick_picks = int(input("How many quick picks? "))
 
     possible_picks = randomize_choices(MAX_CHOICE, MIN_CHOICE, NUM_OF_CHOICES, num_of_quick_picks, possible_picks)
+
+    print("")
+
+    for i in range(0, num_of_quick_picks):
+        for j in range(0, NUM_OF_CHOICES - 1):
+            print("{:2} ".format(possible_picks[i * NUM_OF_CHOICES + j]), end=" ")
+        print()
+
+    print("")
+
     possible_picks = order(NUM_OF_CHOICES, num_of_quick_picks, possible_picks)
 
-    print("")
-
-    # TODO: Ticket output.
-    print("")
+    # TODO: Code the quick picks/auto picks.
 
 
 def order(NUM_OF_CHOICES, num_of_quick_picks, possible_picks):
-    # TODO: order the number numaricaly.
+    for i in range(0, num_of_quick_picks):
+        for j in range(0, NUM_OF_CHOICES - 1):
+            temp_min = possible_picks.index(min(possible_picks[(i * NUM_OF_CHOICES) + j:(i + 1) * NUM_OF_CHOICES]),
+                                            i * NUM_OF_CHOICES)
+            temp_backup = possible_picks[j + (i * NUM_OF_CHOICES)]
+            possible_picks[j + (i * NUM_OF_CHOICES)] = possible_picks[temp_min]
+            possible_picks[temp_min] = temp_backup
     return possible_picks
 
 
