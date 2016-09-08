@@ -42,7 +42,7 @@ def reorder(NUM_OF_CHOICES, num_of_quick_picks, ticket_numbers):
 def print_ticket(NUM_OF_CHOICES, num_of_quick_picks, ticket_numbers):
     print()
     for i in range(0, num_of_quick_picks):
-        for j in range(0, NUM_OF_CHOICES - 1):
+        for j in range(0, NUM_OF_CHOICES):
             print("{:2} ".format(ticket_numbers[i * NUM_OF_CHOICES + j]), end=" ")
         print()
     print()
@@ -59,10 +59,10 @@ def quick_pick_indexs(ticket_numbers, NUM_OF_CHOICES, num_of_quick_picks):
 def randomize_choices(MAX_CHOICE, MIN_CHOICE, NUM_OF_CHOICES, num_of_quick_picks, ticket_numbers):
     # Randomly create a set of unique numbers a row at a time, adding them to the ticket.
     for i in range(0, num_of_quick_picks):
-        random_choice = random.randint(MIN_CHOICE, MAX_CHOICE)
+        random_choice = random.randint(0, MAX_CHOICE - MIN_CHOICE) + MIN_CHOICE
         for j in range(0, NUM_OF_CHOICES):
             while random_choice in ticket_numbers[i * NUM_OF_CHOICES:]:
-                random_choice = random.randint(MIN_CHOICE, MAX_CHOICE)
+                random_choice = random.randint(0, MAX_CHOICE - MIN_CHOICE) + MIN_CHOICE
             ticket_numbers.append(random_choice)
     return ticket_numbers
 
