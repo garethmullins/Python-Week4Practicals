@@ -17,8 +17,8 @@ def main():
     first_initials = [name[0] for name in names]
     print(first_initials)
 
-    # list comprehension that creates a list containing tuples of both initials
-    # splits each name and adds the first letter of each part to a tuple
+    """list comprehension that creates a list containing tuples of both initials
+    splits each name and adds the first letter of each part to a tuple"""
     full_initials = [(name.split()[0][0], name.split()[1][0]) for name in full_names]
     print(full_initials)
 
